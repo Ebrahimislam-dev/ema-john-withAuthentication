@@ -1,7 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 const Login = () => {
+    const { signInUsingGoogle } = useAuth()
+    const location = useLocation();
+    const history = useHistory();
+    const redirect_uri=location.state?.from ||'/shop'
+    // console.log("came form", location.state?.from);
+
+    const handleGoogleLogin = () => {
+        signInUsingGoogle()
+            .then(result => {
+              history.push(redirect_uri)
+            })
+    }
     return (
         <div className="d-flex align-items-center justify-content-center container">
             <div>
@@ -19,7 +32,12 @@ const Login = () => {
                 </div>
                 <div className="text-center">
                     <h4>-----------------------------OR Log in Using-------------------------- </h4>
-                    <button className="btn-regular text-center">Google</button>
+                    <button
+                        className="btn-regular text-center"
+                        onClick={handleGoogleLogin}
+                    >
+                        Google
+                    </button>
                 </div>
             </div>
 
